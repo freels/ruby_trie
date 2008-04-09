@@ -36,7 +36,10 @@ static void free_trie(trie_node * trie);
 static VALUE rb_trie_get_key(VALUE self, VALUE key) {
 	trie_node * root;
 	trie_node * node;
-	char * key_cstring = RSTRING(key)->ptr;
+	char * key_cstring;
+	
+	//Check_Type(key, T_STRING);
+	key_cstring = StringValuePtr(key);
 
 	Data_Get_Struct(self, trie_node, root);
 	
@@ -48,7 +51,10 @@ static VALUE rb_trie_get_key(VALUE self, VALUE key) {
 static VALUE rb_trie_set_key_to_value(VALUE self, VALUE key, VALUE value) {
 	trie_node * root;
 	trie_node * node;
-	char * key_cstring = RSTRING(key)->ptr;
+	char * key_cstring;
+	
+	//Check_Type(key, T_STRING);
+	key_cstring = StringValuePtr(key);
 
 	Data_Get_Struct(self, trie_node, root);
 
@@ -59,21 +65,20 @@ static VALUE rb_trie_set_key_to_value(VALUE self, VALUE key, VALUE value) {
 }
 
 static VALUE rb_trie_undef_key(VALUE self, VALUE key) {
-	trie_node * root;
-	trie_node * node;
-	trie_node * prev;
-	trie_node * next;
-	VALUE return_value;
+	trie_node * root, * node, * prev, * next;
+	VALUE return_value;	
 	char * key_cstring;
 	int steps;
 	int i;
+	
+	//Check_Type(key, T_STRING);
+	key_cstring = StringValuePtr(key);
 	
 	Data_Get_Struct(self, trie_node, root);
 	next = root;
 	node = NULL;
 	prev = NULL;
 
-	key_cstring = RSTRING(key)->ptr;
 	steps = strlen(key_cstring);
 	
 	for (i = 0; i < steps; i++) {
